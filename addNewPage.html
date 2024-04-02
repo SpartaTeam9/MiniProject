@@ -1,0 +1,136 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여행지 추가하기</title>
+    <style>
+        /* 전체 페이지의 기본 폰트 설정 */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        /* 헤더 영역 스타일 */
+        .header {
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            margin: 100px 50px 0; 
+            padding: 20px; 
+            background-color: #e7fcff; /* 배경 색 */
+        }
+        /* 헤더 내 타이틀 스타일 */
+        .title {
+            flex: 1;
+            text-align: center;
+        }
+        /* 이미지 업로드 영역 스타일 */
+        .image-upload {
+            display: inline-block; 
+            width: calc(50% - 60px); 
+            margin: 80px 0 0 50px; 
+            vertical-align: top; 
+        }
+        .image-upload input[type="file"] {
+            display: none;
+        }
+        .image-upload label {
+            display: block; 
+            width: 100%; 
+            padding-top: 90%;
+            position: relative; 
+            background: url('default image') center/cover no-repeat;
+            cursor: pointer; 
+        }
+        .image-upload p {
+            text-align: center;
+            margin-top: 10px;
+        }
+        /* 입력 정보 영역 스타일 */
+        .info {
+            display: inline-block;
+            width: calc(50% - 100px);
+            margin-left: 100px;
+            vertical-align: top;
+        }
+        /* 입력 필드를 옆에 배치하기 위한 스타일 */
+        .info > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .info label, .info input[type="text"] {
+        width: 200px; /* 입력 칸 크기 일정하게 설정 */
+        text-align: center; /* 텍스트 가운데 정렬 */
+        line-height: 40px; /* 라벨의 세로 높이 조정 */
+    }
+    .info input[type="text"] {
+        margin-left: 20px; /* 라벨과 입력 칸 사이 거리 */
+    }
+    
+        /* 확장 정보 영역 스타일 */
+        .extended-info {
+            margin: 20px 70px;
+        }
+        .extended-info .location, .extended-info .review {
+            margin-bottom: 20px;
+        }
+        .extended-info input[type="text"], .extended-info textarea {
+            width: 100%;
+            padding: 10px;
+            height: 40px; /* 수정: 입력란 높이 조정 */
+            resize: none; /* 사용자가 크기 조절 못하도록 설정 */
+        }
+        .extended-info .review textarea {
+            height: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="title">새로운 여행지를 작성해주세요</div>
+    <button>완료</button>
+</div>
+
+<div class="content">
+    <div class="image-upload">
+        <label for="file-input"></label>
+        <input id="file-input" type="file" />
+        <p>사진 추가</p>
+    </div>
+
+    <div class="info">
+        <div>
+            <label for="place-name">장소명</label>
+            <input type="text" id="place-name" />
+        </div>
+        <div>
+            <label for="author">작성자</label>
+            <input type="text" id="author" />
+        </div>
+        <div>
+            <label for="phone">전화번호</label>
+            <input type="text" id="phone" />
+        </div>
+        <div>
+            <label for="hours">영업시간</label>
+            <input type="text" id="hours" />
+        </div>
+    </div>
+</div>
+
+<div class="extended-info">
+    <div class="location">
+        <label for="location">위치</label>
+        <input type="text" id="location" placeholder="위치를 입력해주세요" />
+    </div>
+    <div class="review">
+        <label for="review">후기</label>
+        <textarea id="review" placeholder="후기를 입력해주세요"></textarea>
+    </div>
+</div>
+
+</body>
+</html>
+
