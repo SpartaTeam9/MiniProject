@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9해조 여행 스팟 소개</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        body {
+
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: white;
+            font-family: 'Raleway', sans-serif;
+            font-weight: bold;
+        }
+
+        .logo {
+            background-color: #C3bef0;
+            color: white;
+
+            height: 100px;
+
+            /* 내용물을 정렬 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+
+            background-position: center;
+            background-size: cover;
+
+
+
+        }
+
+        .mytitle {
+            background-color: green;
+            color: white;
+
+            height: 300px;
+
+            /* 내용물을 정렬 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://newsimg.sedaily.com/2020/06/12/1Z3ZZOKI8W_1.jpg');
+            background-position: center;
+            background-size: cover;
+        }
+
+        .mytitle>button {
+            width: 250px;
+            height: 50px;
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            border: 1px solid white;
+            margin-top: 20px;
+        }
+
+        .mycards {
+            margin: 20px auto 20px auto;
+            width: 1200px;
+        }
+
+        .my_btn {
+            background-color: #736ac0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 90px;
+        }
+
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            display: none;
+
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal_body {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            width: 400px;
+            height: 600px;
+
+            padding: 40px;
+
+            text-align: center;
+
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+            transform: translateX(-50%) translateY(-50%);
+        }
+    </style>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+        import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+
+        // Firebase 구성 정보 설정
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqOAuTxvcgJn46nyyeuwN1keffqdAcgeY",
+            authDomain: "spartateam9-dae30.firebaseapp.com",
+            projectId: "spartateam9-dae30",
+            storageBucket: "spartateam9-dae30.appspot.com",
+            messagingSenderId: "86541193674",
+            appId: "1:86541193674:web:d511323cd290d277073f33",
+            measurementId: "G-Z2L0WZZ79B"
+        };
+
+        // Firebase 인스턴스 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+
+        let docs = await getDocs(collection(db, "travels"));
+        docs.forEach((doc) => {
+            let row = doc.data();
+            let image = row['image'];
+            let place = row['place'];
+            let score = row['score'];
+            let located = row['located'];
+            let temp_html = `
+
+            <div class="card h-100">
+                    <img src="${image}"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">장소명 :${place}</p>
+                        <p class="card-text">별점 : ${score}</p>
+                        <p class="card-text">위치 : ${located}</p>
+                    </div> 
+                    <div class="card-footer">
+                        <button type="button" class="my_btn" id="${place}">상세보기</button>
+                    </div>
+                </div>
+            `
+            $('#card').append(temp_html);
+
+        });
+
+        $(".my_btn").click(async function () {
+            let myValue = this.id;
+
+            var popupUrl = 'detail.html?data=' + encodeURIComponent(myValue);
+            var _width = '600';
+            var _height = '700';
+
+            // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
+            var _left = Math.ceil((window.screen.width - _width) / 2);
+            var _top = Math.ceil((window.screen.height - _height) / 2);
+
+            window.open(popupUrl, 'popup-test', 'width=' + _width + ', height=' + _height + ', left=' + _left + ', top=' + _top);
+
+
+
+
+
+
+        });
+        const body = document.querySelector('body');
+        const modal = document.querySelector('.modal');
+        const btnOpenPopup = document.querySelector('.btn-open-popup');
+
+
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.classList.toggle('show');
+
+                if (!modal.classList.contains('show')) {
+                    body.style.overflow = 'auto';
+                }
+            }
+        });
+
+        // 페이지 로드 시 Firebase에서 장소 정보 가져와서 카드 생성
+        $(document).ready(async function () {
+            await fetchAndCreateCards();
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="modal" id="details">
+        <div class="modal_body">Modal</div>
+    </div>
+    <div class="logo">
+        <h1>9해조 여행 Logo </h1>
+    </div>
+    <div class="mytitle">
+        <h1>당신의 여행을 기록해 주세요</h1>
+        <button id="postingbtn2">여행 추가</button>
+    </div>
+
+
+    <div class="mycards">
+        <div id="card" class="row row-cols-1 row-cols-md-4 g-4">
+
+
+        </div>
+    </div>
+</body>
+
+</html>
