@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
@@ -81,79 +83,114 @@
             margin: 5px 0px 5px 0px;
         }
     </style>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+
+        // Firebase 구성 정보 설정
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqOAuTxvcgJn46nyyeuwN1keffqdAcgeY",
+            authDomain: "spartateam9-dae30.firebaseapp.com",
+            projectId: "spartateam9-dae30",
+            storageBucket: "spartateam9-dae30.appspot.com",
+            messagingSenderId: "86541193674",
+            appId: "1:86541193674:web:d511323cd290d277073f33",
+            measurementId: "G-Z2L0WZZ79B"
+        };
+
+        // Firebase 인스턴스 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var data = urlParams.get('data');
+        let docs = await getDocs(collection(db, "travels"));
+
+        let id;
+
+        docs.forEach((doc) => {
+            let row = doc.data();
+
+            let place = row["place"];
+            let image = row['image'];
+            let score = row['score'];
+            let time = row['time'];
+            let review = row['review'];
+            let located = row['located'];
+            let phone = row['phone'];
+            if (place == data) {
+                document.getElementById("place_name").innerText = place;
+                document.getElementById("ph").innerText = phone;
+                document.getElementById("time").innerText = time;
+                document.getElementById("scores").innerText = score;
+                document.getElementById("located").innerText = located;
+                document.getElementById("ment").innerText = review;
+                document.getElementById("place_image").src = image;
+
+                id = doc.id;
+            }
+
+        });
+
+        function del() {
+            deleteDoc(doc(db, "travels", id))
+                .then(() => {
+                    console.log("문서삭제");
+                    alert("삭제되었습니다");
+                    history.back();
+                })
+                .catch((error) => {
+                    console.error("삭제 실패");
+                    alert("삭제에 실패");
+                });
+        }
+
+        $(document).ready(function () {
+            $('#deletebtn').click(function () {
+                del();
+            });
+        });
+
+    </script>
 </head>
 
-<script>
-    function del() {
-        alert('삭제')
-    }
-
-</script>
 
 <body>
     <div class="container">
         <div class="box">
             <div class="place">
-                <h1>장소명</h1>
-                <button style="font-size: 100%;" onclick="del()">삭제</button>
+                <span id="place_name"></span>
+                <button id="deletebtn">삭제</button>
             </div>
 
             <div class="first">
                 <div class="photo">
-                    <img src="https://images.unsplash.com/photo-1446768500601-ac47e5ec3719?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1446&q=80"
-                        alt="장소" width="300px" height="300px">
+                     <img id="place_image" alt="장소" width="300px" height="300px">
                 </div>
                 <div class="info">
-                    <div class="info1">전화번호 <span id="ph">010-1234-5678</span></div>
-                    <div class="info1">시간</div>
-                    <div class="info1">평점</div>
+                    <div class="ph">전화번호 : <span id="ph"></span></div>
+                    <div class="time">시간 : <span id="time"></span></div>
+                    <div class="score">평점 : <span id="scores"></span></div>
                 </div>
             </div>
-            <div class="pos">위치</div>
+            <div class="pos">위치 : <span id="located"></span></div>
 
             <div class="Allcomment">
                 <div class="review">후기</div>
                 <div class="comment">
-                    <span class="ment">너무 맛있어요!</span>
-                </div>
-                <div class="comment">
-                    <span class="ment">너무 맛있어요!</span>
-                </div>
-                <div class="comment">
-                    <span class="ment">너무 맛있어요!</span>
+                    <span id="ment"></span>
                 </div>
             </div>
 
         </div>
 
     </div>
-
     <script>
-        // URL에서 매개변수 추출 함수
-        function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, '\\$&');
-            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
 
-        // 페이지 로드 시 실행되는 코드
-        window.onload = function () {
-            var dataReceived = getParameterByName('data');
-            if (dataReceived) {
-                // 받은 데이터를 결과 div 요소에 삽입
-                document.getElementById('ph').innerHTML = dataReceived;
 
-                // 받은 데이터를 다른 HTML 요소의 속성값으로 활용할 수도 있습니다.
-                // 예를 들어, 이미지의 src 속성에 받은 데이터를 사용할 수 있습니다.
-                // document.getElementById('myImage').src = dataReceived;
-            } else {
-                document.getElementById('result').innerHTML = '데이터가 없습니다.';
-            }
-        };
+
     </script>
 </body>
 
