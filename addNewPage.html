@@ -20,7 +20,6 @@
             flex: 1;
             text-align: center;
         }
-        
         .image-upload {
             display: inline-block; 
             width: calc(40% - 60px); 
@@ -31,30 +30,28 @@
             display: none;
         }
         .image-upload label {
-        width: 300px; 
-         height: 200px; 
-         display: flex; 
-          justify-content: center;
-         align-items: center;
-          background: url('defaultImage.png') center/cover no-repeat;
-         background-size: contain; 
-         cursor: pointer;
-           
+            width: 300px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('defaultImage.png') center/cover no-repeat;
+            background-size: contain;
+            cursor: pointer;
         }
-
         .image-upload p {
             text-align: center;
             margin-top: 10px;
         }
         .image-preview {
-            width: 100%; /* 미리보기 이미지의 너비를 라벨 너비에 맞춤 */
-          height: auto; /* 높이를 자동으로 조정하여 비율 유지 */
-            display: block; /* 미리보기 이미지를 보이게 설정 */
-}
+            width: 100%;
+            height: auto;
+            display: block;
+        }
         .info {
             display: inline-block;
             width: calc(50% - 100px);
-            margin: 100px 0 0 130px; 
+            margin: 100px 0 0 130px;
             vertical-align: top;
         }
         .info > div {
@@ -100,49 +97,44 @@
 
 <div class="header">
     <div class="title">새로운 여행지를 작성해주세요</div>
-   <button id="submitBtn">완료</button>
+    <button id="submitBtn">완료</button>
 </div>
 
 <div class="content">
     <div class="image-upload">
-        <label for="file-input" style="cursor: pointer;">
-            <img id="image-preview" style="width: 100%; max-height: 200px;">
+        <label for="image" style="cursor: pointer;">
+            <img id="image-preview" style="width: 100%; max-height: 200px; display: none;">
         </label>
-        <input id="file-input" type="file" />
+        <input id="image" type="file" />
         <p>사진 추가</p>
     </div>
     <script>
-        document.getElementById('file-input').addEventListener('change', function(e) {
-            const file = e.target.files[0]; 
-    
+        document.getElementById('image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const preview = document.getElementById('image-preview');
                     preview.src = e.target.result;
-                    preview.style.display = 'block'; 
+                    preview.style.display = 'block';
                 };
-                reader.readAsDataURL(file); 
+                reader.readAsDataURL(file);
             }
         });
     </script>
     
     <div class="info">
         <div>
-            <label for="place-name">장소명</label>
-            <input type="text" id="place-name" />
-        </div>
-        <div>
-            <label for="author">작성자</label>
-            <input type="text" id="author" />
+            <label for="place">장소명</label>
+            <input type="text" id="place" />
         </div>
         <div>
             <label for="phone">전화번호</label>
             <input type="text" id="phone" />
         </div>
         <div>
-            <label for="hours">영업시간</label>
-            <input type="text" id="hours" />
+            <label for="time">영업시간</label>
+            <input type="text" id="time" />
         </div>
         <label for="score">별점:</label>
         <select id="score" class="form-select">
@@ -158,24 +150,20 @@
 
 <div class="extended-info">
     <div>
-        <label for="location">위치:</label>
-        <input type="text" id="location" class="form-control" placeholder="위치를 입력해주세요" />
+        <label for="located">위치:</label>
+        <input type="text" id="located" class="form-control" placeholder="위치를 입력해주세요" />
     </div>
     <div>
         <label for="review">후기:</label>
         <textarea id="review" class="form-control" placeholder="후기를 입력해주세요"></textarea>
     </div>
 </div>
-</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js"; // 수정됨
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
-    // Firebase 구성 정보 설정
     const firebaseConfig = {
       apiKey: "AIzaSyCqOAuTxvcgJn46nyyeuwN1keffqdAcgeY",
       authDomain: "spartateam9-dae30.firebaseapp.com",
@@ -186,46 +174,43 @@ import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-fire
       measurementId: "G-Z2L0WZZ79B"
     };
   
-    // Firebase 앱 초기화
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
   
     async function uploadImageAndGetURL(file) {
-      if (!file) return ""; // 파일이 없으면 빈 문자열 반환으로 처리함
-      const fileRef = storageRef(storage, `images/${Date.now()}_${file.name}`);
-      await uploadBytes(fileRef, file);
-      return getDownloadURL(fileRef);
+        if (!file) return "";
+        const fileRef = storageRef(storage, `images/${Date.now()}_${file.name}`);
+        await uploadBytes(fileRef, file);
+        return getDownloadURL(fileRef);
     }
   
     document.getElementById('submitBtn').addEventListener('click', async () => {
-      const file = document.getElementById('file-input').files[0];
-      const placeName = document.getElementById('place-name').value;
-      const author = document.getElementById('author').value;
-      const phone = document.getElementById('phone').value;
-      const hours = document.getElementById('hours').value;
-      const score = document.getElementById('score').value;
-      const location = document.getElementById('location').value;
-      const review = document.getElementById('review').value;
+        const file = document.getElementById('image').files[0];
+        const place = document.getElementById('place').value;
+        const phone = document.getElementById('phone').value;
+        const time = document.getElementById('time').value;
+        const score = document.getElementById('score').value;
+        const located = document.getElementById('located').value;
+        const review = document.getElementById('review').value;
   
-      try {
-        const imageURL = await uploadImageAndGetURL(file); // 이미지 업로드 및 URL 받기
-        await addDoc(collection(db, 'travels'), {
-          placeName,
-          imageURL, // Firestore에 이미지 URL 저장
-          author,
-          phone,
-          hours,
-          score,
-          location,
-          review
-        });
-        alert('여행지 정보가 성공적으로 추가되었습니다.');
-
-    } catch (error) {
-        console.error('Error adding document: ', error);
-        alert('오류가 발생했습니다. 정보를 다시 확인해 주세요.');
-      }
+        try {
+            const imageURL = await uploadImageAndGetURL(file);
+            await addDoc(collection(db, 'travels'), {
+                place,
+                image: imageURL,
+                phone,
+                time,
+                score,
+                located,
+                review
+            });
+            alert('여행지 정보가 성공적으로 추가되었습니다.');
+        } catch (error) {
+            console.error('Error adding document: ', error);
+            alert('오류가 발생했습니다. 정보를 다시 확인해 주세요.');
+        }
     });
-  </script>
-  
+</script>
+</body>
+</html>
