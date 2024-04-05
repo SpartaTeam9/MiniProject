@@ -168,7 +168,7 @@
                         <p class="card-text">장소명 :${place}</p>
                         <p class="card-text">별점 : ${score}</p>
                         <p class="card-text">위치 : ${located}</p>
-                    </div> 
+                    </div>
                     <div class="card-footer">
                         <button type="button" class="my_btn" id="${place}">상세보기</button>
                     </div>
@@ -179,23 +179,57 @@
         });
 
         $(".my_btn").click(async function () {
-            let myValue = this.id;
+            let w_place = this.id;
+            
+            
+            let temp_html =`
+                <div class="modal_body">
+                    <<h2 id="place">${w_place}</h2>
+                     >
+                </div>
+                `
+            
+            document.getElementById("details").innerHTML=temp_html;
 
-            var popupUrl = 'detail.html?data=' + encodeURIComponent(myValue);
-            var _width = '600';
-            var _height = '700';
+            docs.forEach((doc) => {
+                let row = doc.data();
 
-            // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
-            var _left = Math.ceil((window.screen.width - _width) / 2);
-            var _top = Math.ceil((window.screen.height - _height) / 2);
+                let place = row["place"];
+                let image = row['image'];
+                let score = row['score'];
+                let time = row['time'];
+                let review = row['review'];
+                let located = row['located'];
+                let phone = row['phone'];
+                if(place == w_place){
+                    let a=`
+                    <div class="modal_body">
+                        <p >${image}"
+                         <p>
+                    <p >장소명 : ${place}</p>
+                    
+                    <p >위치 : ${located}</p>
+                    <p >전화번호 : ${phone}</p>
+                    <p >영업시간 : ${time}</p>
+                    <p >별점 : ${score}</p>
+                    <p >후기 : ${review}</p>
+                     
+                    </div>
+                    `
+                    document.getElementById("details").innerHTML=a;
+                }
 
-            window.open(popupUrl, 'popup-test', 'width=' + _width + ', height=' + _height + ', left=' + _left + ', top=' + _top);
 
 
 
+            });
 
 
+            modal.classList.toggle('show');
 
+            if (modal.classList.contains('show')) {
+                body.style.overflow = 'hidden';
+            }
         });
         const body = document.querySelector('body');
         const modal = document.querySelector('.modal');
