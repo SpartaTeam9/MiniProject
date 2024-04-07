@@ -16,7 +16,7 @@
         }
 
         body {
-
+            flex-direction: row;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -26,27 +26,23 @@
         }
 
         .logo {
-            background-color: #C3bef0;
-            color: white;
-
-            height: 100px;
+            height: 170px;
 
             /* 내용물을 정렬 */
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
 
-
             background-position: center;
             background-size: cover;
-
-
-
+        }
+        .logo img {
+            position: absolute; /* 로고를 절대 위치로 설정 */
+            left: 15%; /* 원하는 위치로 조정 */
         }
 
         .mytitle {
-            background-color: green;
             color: white;
 
             height: 300px;
@@ -74,13 +70,22 @@
             display: flex;
             justify-content: center;
             padding: 10px;
-            border: 1px solid white;
+            border: 2px solid #EEF1FF;
             margin-top: 20px;
+        }
+        .mytitle>button:hover { /* 마우스를 올렸을 때의 색상 */
+            background-color: white;
+            border: 1px solid white;
+            color: #AAC4FF; 
         }
 
         .mycards {
             margin: 20px auto 20px auto;
-            width: 1200px;
+            width: 75%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
         }
 
         .my_btn {
@@ -226,7 +231,8 @@
         <div class="modal_body">Modal</div>
     </div>
     <div class="logo">
-        <h1>9해조 여행 Logo </h1>
+        <img src="logo.png" alt="로고" height="130px">
+        <h1>TRAVELLY</h1>
     </div>
     <div class="mytitle">
         <h1>당신의 여행을 기록해 주세요</h1>
