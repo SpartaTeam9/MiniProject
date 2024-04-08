@@ -139,11 +139,14 @@
                 .then(() => {
                     console.log("문서삭제");
                     alert("삭제되었습니다");
-                    history.back();
+                    window.close();
+                    location.reload(true);
                 })
                 .catch((error) => {
                     console.error("삭제 실패");
                     alert("삭제에 실패");
+                    window.close();
+                    location.reload(true);
                 });
         }
 
@@ -151,6 +154,7 @@
             $('#deletebtn').click(function () {
                 del();
             });
+
         });
 
     </script>
@@ -167,7 +171,7 @@
 
             <div class="first">
                 <div class="photo">
-                     <img id="place_image" alt="장소" width="300px" height="300px">
+                    <img id="place_image" alt="장소" width="300px" height="300px">
                 </div>
                 <div class="info">
                     <div class="ph">전화번호 : <span id="ph"></span></div>
