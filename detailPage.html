@@ -140,13 +140,11 @@
                     console.log("문서삭제");
                     alert("삭제되었습니다");
                     window.close();
-                    location.reload(true);
                 })
                 .catch((error) => {
                     console.error("삭제 실패");
                     alert("삭제에 실패");
                     window.close();
-                    location.reload(true);
                 });
         }
 
@@ -154,7 +152,6 @@
             $('#deletebtn').click(function () {
                 del();
             });
-
         });
 
     </script>
