@@ -139,11 +139,11 @@
         <label for="score">별점:</label>
         <select id="score" class="form-select">
             <option value="">별점을 선택해주세요</option>
-            <option value="1">⭐️</option>
-            <option value="2">⭐️⭐️</option>
-            <option value="3">⭐️⭐️⭐️</option>
-            <option value="4">⭐️⭐️⭐️⭐️</option>
-            <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+            <option value="⭐️">⭐️</option>
+            <option value="⭐️⭐️">⭐️⭐️</option>
+            <option value="⭐️⭐️⭐️">⭐️⭐️⭐️</option>
+            <option value="⭐️⭐️⭐️⭐️">⭐️⭐️⭐️⭐️</option>
+            <option value="⭐️⭐️⭐️⭐️⭐️">⭐️⭐️⭐️⭐️⭐️</option>
         </select>
     </div>
 </div>
@@ -206,6 +206,7 @@
                 review
             });
             alert('여행지 정보가 성공적으로 추가되었습니다.');
+            window.location.href = 'mainPage.html';
         } catch (error) {
             console.error('Error adding document: ', error);
             alert('오류가 발생했습니다. 정보를 다시 확인해 주세요.');
