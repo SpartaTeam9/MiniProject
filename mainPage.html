@@ -126,6 +126,15 @@
 
             transform: translateX(-50%) translateY(-50%);
         }
+
+        #mask {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 9000;
+            background-color: #000;
+            display: none;
+        }
     </style>
     <script type="module">
         // Import the functions you need from the SDKs you need
@@ -177,20 +186,71 @@
             $('#card').append(temp_html);
 
         });
+        function wrapWindowByMask() {
+            //화면의 높이와 너비를 구한다.
+            var maskHeight = $(document).height();
+            var maskWidth = $(window).width();
+
+            //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+            $('#mask').css({ 'width': maskWidth, 'height': maskHeight });
+
+            //애니메이션 효과 - 일단 1초동안 까맣게 됐다가 80% 불투명도로 간다.
+            $('#mask').fadeIn(1000);
+            $('#mask').fadeTo("slow", 0.8);
+
+            //윈도우 같은 거 띄운다.
+            $('.window').show();
+        }
+
+
+
+        //닫기 버튼을 눌렀을 때
+        $('.window .close').click(function (e) {
+            //링크 기본동작은 작동하지 않도록 한다.
+            e.preventDefault();
+            $('#mask, .window').hide();
+
+        });
+
+
+        $('#mask').click(function () {
+            $(this).hide();
+            location.reload(true);
+            $('.window').hide();
+        });
 
         $(".my_btn").click(async function () {
             let myValue = this.id;
 
             var popupUrl = 'detail.html?data=' + encodeURIComponent(myValue);
-            var _width = '600';
-            var _height = '700';
+            var popupWidth = 600;
+            var popupHeight = 700;
 
-            // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
-            var _left = Math.ceil((window.screen.width - _width) / 2);
-            var _top = Math.ceil((window.screen.height - _height) / 2);
+            // 화면 중심 계산
+            var leftPosition = (screen.width - popupWidth) / 2 + window.screenLeft;
+            var topPosition = (screen.height - popupHeight) / 2 + window.screenTop;
 
-            window.open(popupUrl, 'popup-test', 'width=' + _width + ', height=' + _height + ', left=' + _left + ', top=' + _top);
+            // 팝업 창 열기
 
+
+            var maskHeight = $(document).height();
+            var maskWidth = $(window).width();
+
+            //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+            $('#mask').css({ 'width': maskWidth, 'height': maskHeight });
+
+            //애니메이션 효과 - 일단 1초동안 까맣게 됐다가 80% 불투명도로 간다.
+            $('#mask').fadeIn(1000);
+            $('#mask').fadeTo("slow", 0.8);
+
+            var popupWindow = window.open(popupUrl, 'popup-test', 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + leftPosition + ', top=' + topPosition);
+
+            var checkPopupInterval = setInterval(function () {
+                if (popupWindow.closed) {
+                    clearInterval(checkPopupInterval); // 주기적인 체크 중단
+                    location.reload(true); // 페이지 새로고침
+                }
+            }, 1000);
 
 
 
@@ -225,6 +285,7 @@
     <div class="modal" id="details">
         <div class="modal_body">Modal</div>
     </div>
+    <div id="mask"></div>
     <div class="logo">
         <h1>9해조 여행 Logo </h1>
     </div>
@@ -241,5 +302,15 @@
         </div>
     </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $('#postingbtn2').click(function () {
+            window.location.href = 'addNewPage.html';
+        });
+    });
+</script>
+</body>
+
+</html>
 
 </html>
