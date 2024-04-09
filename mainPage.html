@@ -16,17 +16,14 @@
         }
 
         body {
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             background: white;
             font-family: 'Raleway', sans-serif;
-            font-weight: bold;
         }
 
         .logo {
-            height: 170px;
+            height: 140px;
+            font-size: 40px;
 
             /* 내용물을 정렬 */
             display: flex;
@@ -59,13 +56,12 @@
         }
 
         .mytitle>button {
-            width: 250px;
             height: 50px;
+            width: 200px;
             background-color: transparent;
             border: none;
             color: white;
             font-size: 18px;
-            font-weight: bold;
             border-radius: 5px;
             display: flex;
             justify-content: center;
@@ -81,11 +77,12 @@
 
         .mycards {
             margin: 20px auto 20px auto;
-            width: 75%;
+            width: 70%;
+            height: auto; /* 부모 요소의 높이를 자동으로 설정 */
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
+            align-items: space-evenly;
+            justify-content:space-evenly;
+            
         }
 
         .my_btn {
@@ -94,7 +91,21 @@
             border: none;
             border-radius: 5px;
             padding: 10px 90px;
+            margin : 10px;
         }
+        .card-columns {
+
+    column-count: 4;
+
+
+}
+.card{
+    margin-bottom: 15px;
+    height: auto; /* 카드의 높이를 자동으로 설정 */
+    overflow: hidden; /* 필요한 경우에만 스크롤 표시 */
+    
+}
+
 
         .modal {
             position: absolute;
@@ -175,7 +186,9 @@
             let located = row['located'];
             let temp_html = `
 
-            <div class="card h-100">
+           
+ 
+            <div class="card">
                     <img src="${image}"
                         class="card-img-top" alt="...">
                     <div class="card-body">
@@ -183,10 +196,11 @@
                         <p class="card-text">별점 : ${score}</p>
                         <p class="card-text">위치 : ${located}</p>
                     </div> 
-                    <div class="card-footer">
-                        <button type="button" class="my_btn" id="${place}">상세보기</button>
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="my_btn flex-grow-1" id="${place}">상세보기</button>
                     </div>
                 </div>
+            </div>
             `
             $('#card').append(temp_html);
 
@@ -281,6 +295,7 @@
         // 페이지 로드 시 Firebase에서 장소 정보 가져와서 카드 생성
         $(document).ready(async function () {
             await fetchAndCreateCards();
+            $('#card').addClass('card-columns'); // Masonry-like 열 레이아웃 클래스 추가
         });
     </script>
 </head>
@@ -292,8 +307,8 @@
     </div>
     <div id="mask"></div>
     <div class="logo">
-        <img src="logo.png" alt="로고" height="130px">
-        <h1>TRAVELLY</h1>
+        <img src="logo.png" alt="로고" height="80px">
+        TRAVELLY
     </div>
     <div class="mytitle">
         <h1>당신의 여행을 기록해 주세요</h1>
@@ -302,9 +317,7 @@
 
 
     <div class="mycards">
-        <div id="card" class="row row-cols-1 row-cols-md-4 g-4">
-
-
+        <div id="card" class="card-columns">
         </div>
     </div>
 </body>
