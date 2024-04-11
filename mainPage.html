@@ -151,6 +151,69 @@
             background-color: #000;
             display: none;
         }
+        .modal{
+            position:absolute;
+            display:none;
+            
+            justify-content: center;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            
+
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal_body{
+            position:absolute;
+            top:50%; //모달을 화면가운데 놓기위함. 
+        
+
+            width:400px;  //모달의 가로크기 
+            height:600px; //모달의 세로크기 
+
+            padding:40px;  
+
+            text-align: center;
+
+            background-color: rgb(255,255,255); //모달창 배경색 흰색
+            border-radius:10px; //테두리 
+            box-shadow:0 2px 3px 0 rgba(34,36,38,0.15); //테두리 그림자 
+
+            transform:translateY(-50%); //모듈창열었을때 위치설정 가운데로 
+        }
+
+        .search-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .search-input {
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cancel-button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
     </style>
     <script type="module">
         // Import the functions you need from the SDKs you need
@@ -238,6 +301,7 @@
             $('.window').hide();
         });
 
+
         $(".my_btn").click(async function () {
             let myValue = this.id;
 
@@ -292,19 +356,71 @@
             }
         });
 
-        // 페이지 로드 시 Firebase에서 장소 정보 가져와서 카드 생성
-        $(document).ready(async function () {
-            await fetchAndCreateCards();
-            $('#card').addClass('card-columns'); // Masonry-like 열 레이아웃 클래스 추가
+        $("#searchButton").click(async function () {
+            try{
+                var data = document.getElementById("searchText").value;
+                let sw=0;
+                docs.forEach((doc) => {
+                let row = doc.data();
+
+                let place = row["place"];
+                let image = row['image'];
+                let score = row['score'];
+                let time = row['time'];
+                let review = row['review'];
+                let located = row['located'];
+                let phone = row['phone'];
+                if(place == data){
+                    
+                    let temp_html=`
+                    <div class="card h-100">
+                    <img src="${image}"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">장소명 :${place}</p>
+                        <p class="card-text">별점 : ${score}</p>
+                        <p class="card-text">위치 : ${located}</p>
+                    </div> 
+                    <div class="card-footer">
+                        <button type="button" class="my_btn" id="${place}">상세보기</button>
+                    </div>
+                   </div>
+                     `
+                    
+                     document.getElementById("card").innerHTML = temp_html;    
+                    sw=1;
+                }
+            
+                });
+                
+                if(sw==0){
+                    alert("검색창에 전체 내용을 정확하게 다시 입력해주세요");
+                }
+
+
+                
+            }
+            catch(e){
+                alert("검색창에 다시 입력해주세요");
+            }
         });
+        
+        $("#cancelButton").click(async function () {
+            location.reload(true); 
+        });
+        
     </script>
 </head>
 
 <body>
 
     <div class="modal" id="details">
-        <div class="modal_body">Modal</div>
+
     </div>
+    
+    
+    
+
     <div id="mask"></div>
     <div class="logo">
         <img src="logo.png" alt="로고" height="80px">
@@ -313,7 +429,18 @@
     <div class="mytitle">
         <h1>당신의 여행을 기록해 주세요</h1>
         <button id="postingbtn2">여행 추가</button>
+
+
     </div>
+    <div class="search-container">
+        <!-- 검색 텍스트 필드 -->
+        <input type="text" id="searchText" class="search-input" placeholder="장소를 입력하세요">
+        <!-- 검색 버튼 -->
+        <button id="searchButton" class="search-button">검색</button>
+        <!-- 검색 취소 버튼 -->
+        <button id="cancelButton" class="cancel-button">취소</button>
+    </div>
+    
 
 
     <div class="mycards">
