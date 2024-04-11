@@ -15,39 +15,45 @@
         .container {
             width: 600px;
             margin: 20px auto 0px auto;
+
         }
 
-        .box {
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-            border-color: black;
-            background-color: white;
-        }
 
         .place {
             display: flex;
             align-items: center;
-            background-color: white;
-            border-color: black;
+            background-color: #B1B2FF;
             padding: 10px 0px 10px 0px;
         }
 
         .place>button {
-            margin-left: 300px;
-            width: 50px;
             height: 40px;
+            width: 80px;
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #EEF1FF;
+            margin-right: 2%;
+            /* 버튼을 오른쪽에서 15% 떨어뜨립니다. */
+            margin-left: auto;
         }
 
         .place>h1 {
-            margin-left: 100px;
-            font-weight: bolder;
+            color: white;
+            margin-left: 20px;
+            font-weight: 100;
         }
 
         .first {
             display: flex;
-            align-items: flex-start;
-            margin-top: 30px;
+            align-items: center;
+            justify-content: center;
         }
 
         .photo>img {
@@ -64,8 +70,8 @@
         }
 
         .info1 {
-            margin-top: 30px;
-            margin-bottom: 30px;
+            margin-top: 10px;
+            margin-bottom: 10px;
             font-size: 130%;
 
         }
@@ -162,18 +168,18 @@
     <div class="container">
         <div class="box">
             <div class="place">
-                <span id="place_name"></span>
+                <h1 id="place_name"></h1>
                 <button id="deletebtn">삭제</button>
             </div>
 
             <div class="first">
                 <div class="photo">
-                    <img id="place_image" alt="장소" width="300px" height="300px">
+                    <img id="place_image" alt="장소" width="300px" height="auto">
                 </div>
                 <div class="info">
-                    <div class="ph">전화번호 : <span id="ph"></span></div>
-                    <div class="time">시간 : <span id="time"></span></div>
-                    <div class="score">평점 : <span id="scores"></span></div>
+                    <div class="info1">전화번호 : <span id="ph"></span></div>
+                    <div class="info1">시간 : <span id="time"></span></div>
+                    <div class="info1">평점 : <span id="scores"></span></div>
                 </div>
             </div>
             <div class="pos">위치 : <span id="located"></span></div>
