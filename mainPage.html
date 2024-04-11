@@ -16,37 +16,33 @@
         }
 
         body {
-
-            justify-content: center;
-            align-items: center;
             height: 100vh;
             background: white;
             font-family: 'Raleway', sans-serif;
-            font-weight: bold;
         }
 
         .logo {
-            background-color: #C3bef0;
-            color: white;
-
-            height: 100px;
+            height: 140px;
+            font-size: 40px;
 
             /* 내용물을 정렬 */
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
 
-
             background-position: center;
             background-size: cover;
+        }
 
-
-
+        .logo img {
+            position: absolute;
+            /* 로고를 절대 위치로 설정 */
+            left: 15%;
+            /* 원하는 위치로 조정 */
         }
 
         .mytitle {
-            background-color: green;
             color: white;
 
             height: 300px;
@@ -63,24 +59,36 @@
         }
 
         .mytitle>button {
-            width: 250px;
             height: 50px;
+            width: 200px;
             background-color: transparent;
             border: none;
             color: white;
             font-size: 18px;
-            font-weight: bold;
             border-radius: 5px;
             display: flex;
             justify-content: center;
             padding: 10px;
-            border: 1px solid white;
+            border: 2px solid #EEF1FF;
             margin-top: 20px;
+        }
+
+        .mytitle>button:hover {
+            /* 마우스를 올렸을 때의 색상 */
+            background-color: white;
+            border: 1px solid white;
+            color: #AAC4FF;
         }
 
         .mycards {
             margin: 20px auto 20px auto;
-            width: 1200px;
+            width: 70%;
+            height: auto;
+            /* 부모 요소의 높이를 자동으로 설정 */
+            display: flex;
+            align-items: space-evenly;
+            justify-content: space-evenly;
+
         }
 
         .my_btn {
@@ -89,7 +97,25 @@
             border: none;
             border-radius: 5px;
             padding: 10px 90px;
+            margin: 10px;
         }
+
+        .card-columns {
+
+            column-count: 4;
+
+
+        }
+
+        .card {
+            margin-bottom: 15px;
+            height: auto;
+            /* 카드의 높이를 자동으로 설정 */
+            overflow: hidden;
+            /* 필요한 경우에만 스크롤 표시 */
+
+        }
+
 
         .modal {
             position: absolute;
@@ -135,6 +161,101 @@
             background-color: #000;
             display: none;
         }
+
+        .modal {
+            position: absolute;
+            display: none;
+
+            justify-content: center;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+
+
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal_body {
+            position: absolute;
+            top: 50%;
+            /* 모달을 화면 가운데 놓기 위함. */
+            left: 50%;
+            /* 모달을 화면 가운데 놓기 위함. */
+
+            width: 400px;
+            /* 모달의 가로 크기 */
+            height: 600px;
+            /* 모달의 세로 크기 */
+
+            padding: 40px;
+
+            text-align: center;
+
+            background-color: rgb(255, 255, 255);
+            /* 모달창 배경색 흰색 */
+            border-radius: 10px;
+            /* 테두리 */
+            box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+            /* 테두리 그림자 */
+
+            transform: translate(-50%, -50%);
+            /* 모듈 창 열었을 때 위치 설정 가운데로 */
+        }
+
+
+        .search-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .search-input {
+            width: 61%;
+            margin-left: auto;
+            margin-bottom: 20px;
+            text-align: start;
+            line-height: 30px;
+            border: 1px solid #ccc;
+            /* 라인 스타일을 변경합니다. */
+            border-radius: 5px;
+            /* 테두리를 둥글게 만듭니다. */
+            padding: 8px;
+            /* 안쪽 여백을 추가합니다. */
+        }
+
+        .search-button {
+            height: 45px;
+            width: 80px;
+            background-color: transparent;
+            border: none;
+            color: #B1B2FF;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 2px solid #B1B2FF;
+        }
+
+        .search-button:hover {
+            /* 마우스를 올렸을 때의 색상 */
+            background-color: #B1B2FF;
+            border: 1px solid #D2DAFF;
+            color: white;
+        }
+
+        .cancel-button {
+            height: 45px;
+            width: 80px;
+            background-color: transparent;
+            border: none;
+
+            font-size: 18px;
+            border-radius: 5px;
+
+            background-color: #B1B2FF;
+            border: 1px solid #D2DAFF;
+            color: white;
+        }
     </style>
     <script type="module">
         // Import the functions you need from the SDKs you need
@@ -170,7 +291,9 @@
             let located = row['located'];
             let temp_html = `
 
-            <div class="card h-100">
+           
+ 
+            <div class="card">
                     <img src="${image}"
                         class="card-img-top" alt="...">
                     <div class="card-body">
@@ -178,10 +301,11 @@
                         <p class="card-text">별점 : ${score}</p>
                         <p class="card-text">위치 : ${located}</p>
                     </div> 
-                    <div class="card-footer">
-                        <button type="button" class="my_btn" id="${place}">상세보기</button>
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="my_btn flex-grow-1" id="${place}">상세보기</button>
                     </div>
                 </div>
+            </div>
             `
             $('#card').append(temp_html);
 
@@ -219,12 +343,13 @@
             $('.window').hide();
         });
 
+
         $(".my_btn").click(async function () {
             let myValue = this.id;
 
-            var popupUrl = 'detail.html?data=' + encodeURIComponent(myValue);
-            var popupWidth = 600;
-            var popupHeight = 700;
+            var popupUrl = 'detailPage.html?data=' + encodeURIComponent(myValue);
+            var popupWidth = 650;
+            var popupHeight = 750;
 
             // 화면 중심 계산
             var leftPosition = (screen.width - popupWidth) / 2 + window.screenLeft;
@@ -273,32 +398,95 @@
             }
         });
 
-        // 페이지 로드 시 Firebase에서 장소 정보 가져와서 카드 생성
-        $(document).ready(async function () {
-            await fetchAndCreateCards();
+        $("#searchButton").click(async function () {
+            try {
+                var data = document.getElementById("searchText").value;
+                let sw = 0;
+                docs.forEach((doc) => {
+                    let row = doc.data();
+
+                    let place = row["place"];
+                    let image = row['image'];
+                    let score = row['score'];
+                    let time = row['time'];
+                    let review = row['review'];
+                    let located = row['located'];
+                    let phone = row['phone'];
+                    if (place == data) {
+
+                        let temp_html = `
+                    <div class="card h-100">
+                    <img src="${image}"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">장소명 :${place}</p>
+                        <p class="card-text">별점 : ${score}</p>
+                        <p class="card-text">위치 : ${located}</p>
+                    </div> 
+                    <div class="card-footer">
+                        <button type="button" class="my_btn" id="${place}">상세보기</button>
+                    </div>
+                   </div>
+                     `
+
+                        document.getElementById("card").innerHTML = temp_html;
+                        sw = 1;
+                    }
+
+                });
+
+                if (sw == 0) {
+                    alert("검색창에 전체 내용을 정확하게 다시 입력해주세요");
+                }
+
+
+
+            }
+            catch (e) {
+                alert("검색창에 다시 입력해주세요");
+            }
         });
+
+        $("#cancelButton").click(async function () {
+            location.reload(true);
+        });
+
     </script>
 </head>
 
 <body>
 
     <div class="modal" id="details">
-        <div class="modal_body">Modal</div>
+
     </div>
+
+
+
+
     <div id="mask"></div>
     <div class="logo">
-        <h1>9해조 여행 Logo </h1>
+        <img src="logo.png" alt="로고" height="80px">
+        TRAVELLY
     </div>
     <div class="mytitle">
         <h1>당신의 여행을 기록해 주세요</h1>
         <button id="postingbtn2">여행 추가</button>
+
+
+    </div>
+    <div class="search-container">
+        <!-- 검색 텍스트 필드 -->
+        <input type="text" id="searchText" class="search-input" placeholder="장소를 입력하세요">
+        <!-- 검색 버튼 -->
+        <button id="searchButton" class="search-button">검색</button>
+        <!-- 검색 취소 버튼 -->
+        <button id="cancelButton" class="cancel-button">취소</button>
     </div>
 
 
+
     <div class="mycards">
-        <div id="card" class="row row-cols-1 row-cols-md-4 g-4">
-
-
+        <div id="card" class="card-columns">
         </div>
     </div>
 </body>
